@@ -6,7 +6,7 @@
   <img src="https://raw.githubusercontent.com/rapid7/metasploit-framework/master/docs/images/msf-logo.png" width="120">
 </p>
 
-<p align="center">
+<p>
   <img width="100" height="167" alt="image" src="https://github.com/user-attachments/assets/59b640d7-76c6-4513-a9e6-dc15f367350e" />
 Metasploit automation tools and scripts
 </p>
