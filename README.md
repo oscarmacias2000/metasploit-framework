@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <img width="431" height="167" alt="image" src="https://github.com/user-attachments/assets/59b640d7-76c6-4513-a9e6-dc15f367350e" />
+  <img width="100" height="167" alt="image" src="https://github.com/user-attachments/assets/59b640d7-76c6-4513-a9e6-dc15f367350e" />
 Metasploit automation tools and scripts
 </p>
 
