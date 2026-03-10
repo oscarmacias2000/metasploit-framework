@@ -20,6 +20,7 @@ Metasploit automation tools and scripts
 <img src="https://img.shields.io/badge/Python-blue?logo=python">
 <img src="https://img.shields.io/badge/Linux-black?logo=linux">
 <img src="https://img.shields.io/badge/Security-Pentesting-green">
+<img src="https://img.shields.io/npm/v/npm.svg?logo=nodedotjs">
 </p>
 
 ---
