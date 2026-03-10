@@ -1,5 +1,4 @@
 from tkinter import LEFT
-from markdown_it.rules_inline import text
 import tkinter as tk
 from tkinter import ttk
 import subprocess
