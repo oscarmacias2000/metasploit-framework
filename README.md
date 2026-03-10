@@ -3,7 +3,6 @@
 <div align="center">
 
 <img width="431" height="167" alt="image" src="https://github.com/user-attachments/assets/1dd55ad7-82a8-47e9-b981-e07a9675060d" />
-" width="180"/>
 
 # Metasploit Automation Toolkit
 
