@@ -30,4 +30,5 @@ Almacena la información de los módulos registrados.
 
 
 ## sequelize
-[!image](https://icon.icepanel.io/Technology/svg/Sequelize.svg)
+![Sequelize Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Sequelize_js.svg/1200px-Sequelize_js.svg.png)
+
