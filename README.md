@@ -32,4 +32,4 @@ Almacena la información de los módulos registrados.
 ## sequelize
 ![Sequelize Logo](https://sequelize.org/img/logo.svg)
 ## postgresql
-![postgresql logo](http://localhost:5173/src/assets/PostgresSQL.svg)
+![postgresql logo](https://www.postgresql.org/media/img/about/press/elephant.png)
