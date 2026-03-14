@@ -28,3 +28,6 @@ Almacena la información de los módulos registrados.
 
 ## 🔧 **Configuración de la Base de Datos**
 
+
+## sequelize
+[!sequelize](https://icon.icepanel.io/Technology/svg/Sequelize.svg)
