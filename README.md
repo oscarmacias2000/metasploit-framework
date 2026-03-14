@@ -30,4 +30,4 @@ Almacena la información de los módulos registrados.
 
 
 ## sequelize
-[!sequelize](https://icon.icepanel.io/Technology/svg/Sequelize.svg)
+[!image](https://icon.icepanel.io/Technology/svg/Sequelize.svg)
