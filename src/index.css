@@ -1,0 +1,97 @@
+/* Estilos generales */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #e2e2e2;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Título principal */
+h1 {
+  text-align: center;
+  color: #295d91;
+  margin-bottom: 30px;
+}
+
+/* Estilo de cada módulo (tabla) */
+.module {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  padding: 20px;
+  transition: transform 0.2s;
+}
+
+.module:hover {
+  transform: translateY(-5px);
+}
+
+.module h2 {
+  margin-top: 0;
+  color: #3498db;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+/* Estilo de las tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  background-color: #eee;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: 600;
+  color: #386694;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Responsive: tablas en pantallas pequeñas */
+@media (max-width: 768px) {
+  .module {
+    padding: 15px;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  th, td {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+}
+
+/* Estilo para el header de la columna */
+.column-header {
+  font-weight: bold;
+  color: #7f8c8d;
+}
+
+/* Estilo para valores por defecto */
+.default-value {
+  font-style: italic;
+  color: #95a5a6;
+}

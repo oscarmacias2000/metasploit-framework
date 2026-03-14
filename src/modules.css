@@ -1,0 +1,70 @@
+  body { font-family: Arial, sans-serif; margin: 20px; background-color: #2e2929;}
+    .module { margin-bottom: 30px; border: 1px solid #3f3838; padding: 15px; border-radius: 5px; }
+    .module h2 { margin-top: 0; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 8px; text-align: left; border-bottom: 1px solid #2e2929; }
+    * { box-sizing: border-box; 
+    }
+
+
+
+    /* Estilos para el body y contenedor principal */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  flex: 1;
+}
+
+/* Estilos para el footer */
+
+/* Opcional: efecto de sombra superior */
+.footer {
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+  color: #ecf0f1;
+  font-size: 14px;
+}
+
+.footer-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Opcional: efecto de transición suave */
+.footer-fixed {
+  transition: background-color 0.3s;
+}
+
+li{
+    list-style: none;
+    color: #ecf0f1;
+}
+ul{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px ;
+  }
