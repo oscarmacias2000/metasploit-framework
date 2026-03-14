@@ -30,5 +30,5 @@ Almacena la información de los módulos registrados.
 
 
 ## sequelize
-![Sequelize Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Sequelize_js.svg/1200px-Sequelize_js.svg.png)
+![Sequelize Logo](https://sequelize.org/img/logo.svg)
 
