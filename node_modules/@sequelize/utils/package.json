@@ -1,0 +1,68 @@
+{
+  "bugs": "https://github.com/sequelize/sequelize/issues",
+  "description": "Sequelize Utility Library",
+  "engines": {
+    "node": ">=18.20.8"
+  },
+  "types": "./lib/common/index.d.ts",
+  "exports": {
+    ".": {
+      "node": {
+        "require": {
+          "types": "./lib/common/index.d.ts",
+          "default": "./lib/common/index.node.js"
+        },
+        "import": {
+          "types": "./lib/common/index.d.mts",
+          "default": "./lib/common/index.node.mjs"
+        }
+      },
+      "types": "./lib/common/index.d.ts",
+      "default": "./lib/common/index.js"
+    },
+    "./node": {
+      "require": {
+        "types": "./lib/node/index.d.ts",
+        "default": "./lib/node/index.js"
+      },
+      "import": {
+        "types": "./lib/node/index.d.mts",
+        "default": "./lib/node/index.mjs"
+      }
+    }
+  },
+  "files": [
+    "lib"
+  ],
+  "sideEffects": false,
+  "homepage": "https://sequelize.org",
+  "license": "MIT",
+  "name": "@sequelize/utils",
+  "repository": "https://github.com/sequelize/sequelize",
+  "scripts": {
+    "test": "concurrently \"npm:test-*\"",
+    "build": "../../build-packages.mjs utils",
+    "test-typings": "tsc --noEmit --project tsconfig.json",
+    "test-unit": "mocha src/**/*.test.ts -r ../../test/register-esbuild.js",
+    "test-exports": "../../dev/sync-exports.mjs ./src --check-outdated --multi-entry-points",
+    "sync-exports": "../../dev/sync-exports.mjs ./src --multi-entry-points"
+  },
+  "type": "commonjs",
+  "version": "7.0.0-alpha.48",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.17.23",
+    "lodash": "^4.17.23"
+  },
+  "devDependencies": {
+    "@types/chai": "4.3.20",
+    "@types/mocha": "10.0.10",
+    "chai": "4.5.0",
+    "concurrently": "9.2.1",
+    "expect-type": "0.19.0",
+    "mocha": "11.7.5"
+  },
+  "gitHead": "50e83d8c586c5479ef37c802b4492e7f7ed7cc1f"
+}
