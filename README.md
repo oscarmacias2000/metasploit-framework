@@ -30,6 +30,6 @@ Almacena la información de los módulos registrados.
 
 
 ## sequelize
-![Sequelize Logo](https://cweijan.gallerycdn.vsassets.io/extensions/cweijan/vscode-myssql-client2/8.4.4/1764153404526/Microsoft.VisualStudio.Services.Icons.Default)
+![SQL Server Client (mssql)](https://cweijan.gallerycdn.vsassets.io/extensions/cweijan/vscode-myssql-client2/8.4.4/1764153404526/Microsoft.VisualStudio.Services.Icons.Default)
 ## postgresql
 ![postgresql logo](https://www.postgresql.org/media/img/about/press/elephant.png)
