@@ -29,7 +29,15 @@ Almacena la información de los módulos registrados.
 ## 🔧 **Configuración de la Base de Datos**
 
 
-## sequelize
+## SQL Server Client (mssql)
 ![SQL Server Client logo)](https://cweijan.gallerycdn.vsassets.io/extensions/cweijan/vscode-myssql-client2/8.4.4/1764153404526/Microsoft.VisualStudio.Services.Icons.Default)
+## modules/database
+| Campo         | Tipo          | Descripción                          | Ejemplo               |
+|---------------|---------------|--------------------------------------|-----------------------|
+| `id`          | `SERIAL`      | Identificador único del módulo.      | `1`                   |
+| `namemodule`  | `VARCHAR(255)`| Nombre del módulo.                   | `"Módulo de Autenticación"` |
+| `description` | `TEXT`        | Descripción detallada del módulo.   | `"Maneja la autenticación de usuarios"` |
+| `type`        | `VARCHAR(50)` | Tipo o categoría del módulo.        | `"Seguridad"`         |
+| `plataform`   | `VARCHAR(50)` | Plataforma donde se ejecuta.        | `"Web"`               |
 ## postgresql
 ![postgresql logo](https://www.postgresql.org/media/img/about/press/elephant.png)
