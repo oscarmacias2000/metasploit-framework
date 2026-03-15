@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "name": "PostgresLocal",
+            "driver": "PostgreSQL",
+            "database": "postgres",
+            "username": "arqerito",
+            "password": "123chivaS?",
+            "ssl": false,
+            "group": "database/modules"
+        }
+    ]
+}
