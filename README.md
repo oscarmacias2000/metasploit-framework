@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/rapid7/metasploit-framework/blob/master/msf-logo.png?raw=true" alt="Metasploit Logo" width="400"/>
+  <img src="https://www.metasploit.com/includes/images/metasploit-logo-light-external-use.svg" alt="Metasploit Logo" width="400"/>
 </p>
 
 # 🛡️ Proyecto con Metasploit Framework
