@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  android:
+    image: tracer0tong/android-emulator   
+    container_name: android-emulator
+    ports:
+      - "5554:5554"
+      - "5555:5555"
+      - "6080:6080"
+    environment:
+      - EMULATOR_DEVICE=Samsung Galaxy S10
+      - WEB_VNC=true
+    volumes:
+      - android-data:/home/androidusr/.android
+    privileged: true
+    healthcheck:
+      test: ["CMD", "adb", "shell", "getprop", "sys.boot_completed"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  expo:
+    image: node:18
+    container_name: expo-app
+    working_dir: /app
+    ports:
+      - "19000:19000"
+      - "19001:19001"
+      - "19002:19002"
+    volumes:
+      - ./expo:/app
+      - /app/node_modules
+    environment:
+      - ANDROID_HOME=/opt/android-sdk
+      - ADB_SERVER_SOCKET=tcp:android-emulator:5555
+    depends_on:
+      android:
+        condition: service_healthy
+    command: sh -c "npm install && npx expo start --tunnel"
+
+volumes:
+  android-data:

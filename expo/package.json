@@ -1,0 +1,32 @@
+{
+  "name": "platform/typefish.app.com/android",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "postinstall": "patch-package",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~57.0.3",
+    "@expo/vector-icons": "^15.1.1",
+    "expo": "~57.0.2",
+    "expo-linear-gradient": "~57.0.0",
+    "expo-status-bar": "~57.0.0",
+    "expo-svg": "^0.0.0",
+    "prettier-plugin-tailwindcss": "^0.5.14",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.0",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-svg": "15.15.4",
+    "react-native-web": "^0.21.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "babel-preset-expo": "~57.0.0",
+    "patch-package": "^8.0.1"
+  }
+}
