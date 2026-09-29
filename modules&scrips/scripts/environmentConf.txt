@@ -1,0 +1,74 @@
+# Ver todos los entornos virtuales en tu sistema
+find ~ -name "pyvenv.cfg" 2>/dev/null
+
+# Ver entorno actual
+echo $VIRTUAL_ENV
+
+# Salir del entorno actual
+deactivate
+
+# Eliminar entorno mal creado
+rm -rf ~/Desktop/modules/modules
+
+#packages install
+pip list
+#ver si msfrpcd esta activo
+ps aux | grep msfrpcd
+sudo netstat -tlnp | grep 555
+
+#probar puertos abiertos si esta o no
+# Probar si el puerto está abierto
+nc -zv localhost 55552
+nc -zv localhost 55553
+
+
+#iniciar el servicio
+sudo msfrpcd -P 123chivaS? -S false -p 55552 -a 127.0.0.1 -f &
+
+#
+sudo lsof -i tcp #ver solo TCP
+sudo lsof -i
+
+#
+nmap -p 21 -sV 192.168.34.4(RHOSTS/LHOSTS)
+#estado de vsftpd
+sudo systemctl status vsftpd
+
+#permisos
+# Si usa UFW (Uncomplicated Firewall)
+sudo ufw allow 21/tcp
+sudo ufw reload
+
+# Si usa iptables (más común en sistemas antiguos)
+sudo iptables -A INPUT -p tcp --dport 21 -j ACCEPT
+# Para guardar las reglas de iptables (el método varía, pero este es común)
+sudo iptables-save > /etc/iptables/rules.v4
+
+#firewall conf
+# 1. Verificar si el firewall está activo
+sudo ufw status verbose
+
+# 2. Verificar si el puerto 21 está en escucha (si hay algún servicio FTP corriendo)
+sudo netstat -tlnp | grep :21
+
+# 3. Verificar si hay reglas específicas para el puerto 21
+sudo ufw status | grep 21
+
+# 1. Prueba local (desde tu Ubuntu)
+nc -zv localhost 21
+# Deberías ver: Connection to localhost port 21 [tcp/ftp] succeeded!
+
+# 2. Ver tu IP local
+ip a | grep inet | grep -v 127.0.0.1
+# Busca tu IP (ej: 192.168.1.x, 10.0.0.x, etc.)
+
+# 3. Prueba desde otra máquina (como tu Kali en VM)
+# Reemplaza TU_IP_LOCAL con la IP que viste arriba
+nc -zv TU_IP_LOCAL 21
+
+#conexion basica
+ftp localhost
+
+
+# Primero, determina tu red:
+ip route | grep default
