@@ -9,18 +9,24 @@ class Framework:
         self.session_manager = SessionManager()
         self.payload_manager = PayloadManager()
         self.module_manager = ModuleManager()
-    
-    def use(self, module_name, module_id):
-        """Selecciona un módulo"""
+
+        self._register_default_modules()
+
+
+
+
+    def _register_default_modules(self):
+        """ Carga módulos de ejemplo en el framework """
+        for path in self.module_manager.list_all():
+            self.modules[path] = Module(path)
+
+    def use(self, module_id):
+        """Selecciona un módulo para usar"""
         if module_id in self.modules:
-            self.current_module = self.modules(module_id)
-            print(f"[*] Usando módulo: {module_name}")
-            print(f"[*] Usando modulo: {module_id}")
-            return True
+            self.current_module = self.modules[module_id]
+            print(f"[*] Módulo seleccionado: {self.current_module.metadata['name']}")
         else:
-            print(f"[-] Modulo no encontrado {module_id}")
-            print(f"[-] Módulo {module_name} no encontrado")
-            return False
+            print(f"[-] Módulo no encontrado: {module_id}")
 
     def run(self):
         """Ejecuta el módulo actual"""
@@ -43,13 +49,25 @@ class Framework:
 
 class Module:
     def __init__(self, name):
+        #Detectar plataforma segun el path
+        if '/linux' in name:
+            platform = 'linux'
+        elif '/windows' in name:
+            platform = 'windows'
+        elif '/android' in name:
+            platform = 'android'
+        elif '/multiplatform' in name:
+            platform = 'multiplatform'
+        else:
+            platform = 'unknown'        
+
         self.metadata = {
             'name': name,
             'description': f'Módulo de ejemplo: {name}',
             'author': 'Developer',
             'version': '1.0.0',
-            'type': 'exploit',
-            'platform': 'windows'
+            'type': name.split('/')[0] if '/' in name else 'exploit',
+            'platform': platform
         }
         self.datastore = {
             'RHOSTS': '127.0.0.1',
@@ -79,17 +97,19 @@ class PayloadManager:
         ]
 
 class ModuleManager:
-    def search(self, query):
-        results = []
-        modules = [
+    def __init__(self):
+        self.modules = [
             'exploit/windows/smb/ms17_010_eternalblue',
             'exploit/linux/http/apache_struts2',
-            'auxiliary/scanner/portscan/tcp'
+            'auxiliary/scanner/portscan/tcp',
+            'post/windows/gather/hashdump'
         ]
-        for module in modules:
-            if query.lower() in module.lower():
-                results.append(module)
-        return results
-    
+
+    def list_all(self):
+        return list(self.modules)
+
+    def search(self, query):
+        return [m for m in self.modules if query.lower() in m.lower()]
+
     def reload_all(self):
         print("[*] Recargando todos los módulos...")

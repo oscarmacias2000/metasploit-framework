@@ -191,7 +191,7 @@ class MiConsole:
             print(f"  {opt_name:20} {str(value):20} {required:15} {opt_info.get('description', '')}")
         
         print("-" * 60)
-    
+   
     def show_sessions(self):
         """Muestra sesiones activas"""
         if not self.framework.session_manager.sessions:
@@ -229,7 +229,12 @@ class MiConsole:
     Tipo:        {metadata.get('type', 'N/A')}
     Plataforma:  {metadata.get('platform', 'N/A')}
     """)
-    
+
+        
+    def do_info(self, arg: str):
+        """info - Muestra información del módulo actual"""
+        self.show_module_info()
+        
     def do_sessions(self, arg: str):
         """sessions - Lista sesiones activas"""
         self.show_sessions()
