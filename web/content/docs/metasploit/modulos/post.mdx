@@ -1,0 +1,22 @@
+---
+title: "post — Post-explotación"
+description: Módulos que se ejecutan después de obtener una sesión.
+---
+
+Se ejecutan **después** de obtener una sesión.
+
+| Módulo | Descripción | Alcance |
+|--------|-------------|---------|
+| `post/windows/persistence` | Registro, tareas, servicios | Windows |
+| `post/windows/cred_dump` | LSASS, SAM, DPAPI | Windows |
+| `post/linux/persistence` | systemd, cron, rc.local | Linux |
+| `post/linux/priv_esc` | SUID, sudo, kernel exploits | Linux |
+| `post/macos/persistence` | LaunchAgents, LaunchDaemons | macOS |
+| `post/macos/keychain_dump` | Keychain extraction | macOS |
+| `post/nokia/sms_dump` | Lectura de SMS | Nokia (Symbian) |
+| `post/nokia/contacts` | Extracción de contactos | Nokia |
+| `post/browser/cookie_steal` | Robo de cookies | Chrome, Firefox, Edge, Safari |
+| `post/browser/history_dump` | Historial y bookmarks | Navegadores |
+| `post/lateral/psexec` | Movimiento lateral | Windows |
+| `post/lateral/ssh_pivot` | Pivoting por SSH | Linux, macOS |
+| `post/cleanup/wipe_logs` | Borrado de evidencias | Todos |

@@ -1,0 +1,20 @@
+---
+title: "Definición de fiabilidad, efectos secundarios y estabilidad del módulo"
+description: Los arrays Notes que documentan el comportamiento honesto de un módulo.
+---
+
+Además del `Rank` (ver [Clasificación de exploits](/docs/desarrollo/calidad/clasificacion-de-exploits)), un módulo puede documentar con más detalle su comportamiento esperado usando el hash `Notes`, con tres claves:
+
+- **`Stability`** — qué tan probable es que el módulo se comporte de forma predecible. Valores como `CRASH_SAFE` (no debería tumbar el servicio) o `CRASH_SERVICE_DOWN` (se sabe que puede tumbarlo).
+- **`Reliability`** — qué tan consistente es el resultado entre ejecuciones. Ej. `REPEATABLE_SESSION` si siempre deja sesión en las mismas condiciones.
+- **`SideEffects`** — efectos observables sobre el objetivo más allá de la explotación en sí, como `EVENT_LOG_ROTATED`, `ARTIFACTS_ON_DISK`, `SCREEN_EFFECTS` (si algo aparece en pantalla) o `AUDIT_LOG_ALTERED`.
+
+```ruby
+'Notes' => {
+  'Stability'    => [CRASH_SAFE],
+  'Reliability'  => [REPEATABLE_SESSION],
+  'SideEffects'  => [ARTIFACTS_ON_DISK, IOC_IN_LOGS]
+}
+```
+
+Documentar esto honestamente ayuda al operador a decidir si un módulo es apropiado para un entorno de producción sensible, o si conviene reservarlo para un laboratorio.

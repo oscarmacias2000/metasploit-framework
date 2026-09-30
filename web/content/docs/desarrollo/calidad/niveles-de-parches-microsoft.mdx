@@ -1,0 +1,24 @@
+---
+title: "Cómo comprobar los niveles de parches de Microsoft para tu exploit"
+description: Fingerprinting de nivel de parche para evitar explotar objetivos ya corregidos.
+---
+
+Muchas vulnerabilidades de Windows se corrigen con actualizaciones acumulativas, pero el sistema operativo sigue reportando la misma versión mayor/menor. Antes de lanzar un exploit conviene verificar, cuando el servicio lo permite, el nivel de parche real del objetivo — no solo el nombre de la versión.
+
+Con acceso SMB, el framework expone utilidades para leer el `OS` y el build/patch level reportado por el objetivo (similares a `smb_peer_os` en módulos SMB existentes), que puedes comparar contra la tabla de builds conocidos-vulnerables de tu exploit antes de intentar la explotación.
+
+```ruby
+def check
+  smb_login rescue nil
+  info = smb_peer_os
+  return CheckCode::Unknown('No se pudo leer el OS remoto') unless info
+
+  if build_vulnerable?(info)
+    CheckCode::Appears
+  else
+    CheckCode::Safe
+  end
+end
+```
+
+Hacer este chequeo evita dos problemas: exploits que fallan silenciosamente contra un host ya parchado, y — peor — exploits que dejan el servicio inestable al intentar una técnica que ya no aplica a ese build.

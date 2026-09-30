@@ -1,0 +1,29 @@
+---
+title: "console — Consola interactiva"
+description: CLI estilo msfconsole con carga dinámica de módulos y gestión de sesiones.
+---
+
+CLI estilo `msfconsole` con:
+
+- Carga dinámica de módulos (`use`, `set`, `run`, `back`).
+- Gestión de sesiones (`sessions -l`, `sessions -i <id>`).
+- Historial persistente, autocompletado, colores.
+- Workspaces por proyecto/cliente.
+- Logs de actividad con timestamps.
+- Plugins externos (Python, Lua, JS).
+
+**Comandos principales:**
+
+| Comando | Descripción |
+|---------|-------------|
+| `search <keyword>` | Busca módulos |
+| `use <module>` | Carga módulo |
+| `set <opt> <val>` | Define opción |
+| `show options` | Muestra opciones |
+| `run` / `exploit` | Ejecuta |
+| `sessions -l` | Lista sesiones activas |
+| `sessions -i <id>` | Interactúa con sesión |
+| `jobs -l` | Lista jobs en background |
+| `workspace -a <name>` | Crea workspace |
+| `db_import <file>` | Importa resultados (XML/JSON) |
+| `exit` | Salir |

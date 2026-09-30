@@ -1,0 +1,32 @@
+---
+title: "Cómo escribir un check"
+description: El método check permite verificar la vulnerabilidad sin explotar.
+---
+
+El método `check` es opcional en un exploit, pero muy valorado: le permite al operador correr `check` en vez de `exploit`/`run` para **confirmar si el objetivo es vulnerable sin lanzar el payload**, lo cual es más seguro en producción y más rápido al escanear muchos objetivos.
+
+`check` debe devolver uno de los códigos definidos en `CheckCode`:
+
+| Código | Significado |
+|--------|-------------|
+| `CheckCode::Safe` | Confirmado que NO es vulnerable |
+| `CheckCode::Detected` | El servicio fue detectado pero no se confirmó la versión |
+| `CheckCode::Appears` | La versión parece vulnerable, sin confirmación exacta |
+| `CheckCode::Vulnerable` | Confirmado vulnerable |
+| `CheckCode::Unknown` | No se pudo determinar |
+
+```ruby
+def check
+  res = send_request_cgi('uri' => '/version.json')
+  return CheckCode::Unknown('Sin respuesta del servicio') unless res
+
+  version = res.get_json_document['version']
+  if Gem::Version.new(version) < Gem::Version.new('2.3.0')
+    CheckCode::Vulnerable
+  else
+    CheckCode::Safe
+  end
+end
+```
+
+Escribir un `check` sólido es una de las contribuciones más apreciadas al revisar un módulo nuevo.

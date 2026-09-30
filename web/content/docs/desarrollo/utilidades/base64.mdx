@@ -1,0 +1,20 @@
+---
+title: "Cómo decodificar Base64 con el compilador de Metasploit Framework"
+description: Codificación y decodificación Base64 de payloads embebidos, común en stagers.
+---
+
+Base64 no es cifrado — es solo una codificación para representar bytes binarios como texto imprimible, algo necesario cuando el payload viaja dentro de un contexto que solo acepta texto (un comando de PowerShell, un parámetro de URL, un valor de registro). Es extremadamente común en stagers de PowerShell (ver [PowerShell en un exploit](/docs/desarrollo/mixins/powershell-en-exploit)), donde el payload completo va como argumento `-EncodedCommand`.
+
+Ruby lo maneja de forma nativa sin dependencias extra:
+
+```ruby
+require 'base64'
+
+codificado = Base64.strict_encode64(payload.encoded)
+# ... se embebe `codificado` en el comando/script que se entrega al objetivo ...
+
+# Del lado de análisis, para decodificar algo capturado:
+original = Base64.decode64(codificado)
+```
+
+Un detalle práctico: PowerShell espera el comando codificado en **UTF-16LE** antes de convertirlo a Base64 (no UTF-8 plano), así que al generar un `-EncodedCommand` manualmente hay que convertir la cadena a esa codificación antes de aplicar `Base64.strict_encode64`, o el intérprete de PowerShell del objetivo no lo va a decodificar correctamente.

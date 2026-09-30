@@ -1,0 +1,23 @@
+---
+title: "Cómo usar las opciones de almacenamiento de datos"
+description: register_options y los tipos de opción disponibles en el datastore.
+---
+
+El **datastore** es el mecanismo central de configuración de cualquier módulo: el hash de opciones que el operador ve y modifica con `set`/`unset` en msfconsole. Un módulo declara sus opciones propias con `register_options` dentro de `initialize`.
+
+```ruby
+def initialize(info = {})
+  super(update_info(info, 'Name' => 'Ejemplo'))
+
+  register_options([
+    OptString.new('TARGETURI', [true, 'Ruta base de la aplicación', '/']),
+    OptPort.new('RPORT', [true, 'Puerto del servicio', 8080]),
+    OptAddress.new('CALLBACK_HOST', [false, 'Host para el callback opcional']),
+    OptBool.new('VERBOSE_MODE', [false, 'Mostrar detalle extra', false]),
+  ])
+end
+```
+
+Cada declaración recibe `[requerido, descripción, valor_por_defecto]`. Tipos más comunes: `OptString`, `OptPort`, `OptAddress` (valida formato IP/host), `OptBool`, `OptPath` (para rutas de archivo), `OptEnum` (para restringir a una lista fija de valores).
+
+Existe también el **datastore global** (`framework.datastore`), compartido entre módulos en la misma sesión de consola — así `RHOSTS` o `LHOST` configurados una vez pueden reutilizarse al cambiar de módulo con `use`, sin tener que repetir el `set` cada vez.

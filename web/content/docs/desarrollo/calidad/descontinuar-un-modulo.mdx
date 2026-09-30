@@ -1,0 +1,28 @@
+---
+title: "Cómo descontinuar un módulo de Metasploit"
+description: El proceso de deprecación antes de eliminar un módulo del árbol.
+---
+
+Los módulos no se borran de golpe: pasan primero por un período de **deprecación**, para no romper scripts o flujos de trabajo de usuarios que dependen de ellos.
+
+El framework provee un mixin de deprecación que, al incluirse, muestra una advertencia clara cada vez que alguien intenta usar (`use`) el módulo, indicando desde cuándo está deprecado y qué lo reemplaza (si aplica):
+
+```ruby
+class MetasploitModule < Msf::Auxiliary
+  include Msf::Module::Deprecated
+
+  deprecated(Date.new(2025, 1, 1), 'auxiliary/scanner/nuevo_modulo_equivalente')
+
+  def initialize(info = {})
+    super(update_info(info, 'Name' => 'Módulo antiguo'))
+  end
+end
+```
+
+Motivos típicos para deprecar un módulo:
+
+- La vulnerabilidad ya no es relevante (software fuera de soporte hace años).
+- Fue reemplazado por un módulo más nuevo y más confiable para el mismo objetivo.
+- Dependía de una librería o servicio externo que ya no existe.
+
+Solo después de un período razonable en estado deprecado (varias releases) se elimina físicamente el archivo del árbol.

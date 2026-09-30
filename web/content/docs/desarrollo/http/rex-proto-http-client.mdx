@@ -1,0 +1,22 @@
+---
+title: "Cómo enviar una solicitud HTTP usando el cliente HTTP Rex Proto"
+description: Uso de bajo nivel de Rex::Proto::Http::Client fuera de un mixin de exploit.
+---
+
+`HTTPClient` (ver la página anterior) es una capa de conveniencia sobre `Rex::Proto::Http::Client`, la librería HTTP de más bajo nivel de Rex (la biblioteca de red compartida por todo Metasploit). A veces necesitas usar esta capa directamente: por ejemplo en una utilidad standalone, en un módulo que habla con más de un host HTTP a la vez, o en un script fuera del ciclo de vida normal de un módulo.
+
+```ruby
+cli = Rex::Proto::Http::Client.new('objetivo.local', 443, {}, true)
+cli.connect
+
+req = cli.request_cgi(
+  'uri'    => '/status',
+  'method' => 'GET'
+)
+res = cli.send_recv(req)
+
+puts res.code if res
+cli.close
+```
+
+La diferencia clave es que aquí manejas tú mismo el ciclo `connect` / `send_recv` / `close`, y puedes instanciar tantos clientes como necesites simultáneamente (por ejemplo, para comparar el comportamiento de dos hosts en paralelo), algo que el mixin `HttpClient` no expone directamente porque asume un solo objetivo por instancia de módulo.

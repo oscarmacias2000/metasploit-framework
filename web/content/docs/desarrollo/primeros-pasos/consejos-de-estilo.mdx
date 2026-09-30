@@ -1,0 +1,23 @@
+---
+title: "Consejos de estilo"
+description: Convenciones de estilo Ruby que sigue el código de Metasploit Framework.
+---
+
+Metasploit es un proyecto Ruby grande con muchos colaboradores, así que el estilo consistente importa más que las preferencias individuales. Las reglas básicas:
+
+- **Indentación de 2 espacios**, nunca tabs.
+- **Líneas de hasta ~100-120 columnas**; si una llamada no cabe, se rompe con continuación indentada.
+- Nombres de variables y métodos en `snake_case`; clases y módulos en `CamelCase`.
+- Las claves del `datastore` (`RHOSTS`, `RPORT`, `LHOST`, etc.) van siempre en **mayúsculas**, por convención heredada de Metasploit clásico.
+- Nunca uses `puts` o `print` directo para mostrar información al usuario: usa las helpers del framework (`print_status`, `print_good`, `print_error`, `print_warning`), que respetan el formato de consola y los logs.
+- Evita dependencias externas (gems) salvo que ya estén vendorizadas en el framework.
+
+Antes de enviar un módulo, corre `msftidy.rb` sobre el archivo — es el linter oficial del proyecto y detecta la mayoría de estos problemas de estilo automáticamente, además de errores comunes de metadatos (licencia, `Rank` inválido, etc.).
+
+```ruby
+# Correcto
+print_status("Enviando payload a #{datastore['RHOSTS']}:#{datastore['RPORT']}")
+
+# Incorrecto
+puts "sending payload to " + datastore['RHOSTS']
+```

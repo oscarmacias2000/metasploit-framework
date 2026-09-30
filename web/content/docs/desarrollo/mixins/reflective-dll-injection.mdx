@@ -1,0 +1,15 @@
+---
+title: "Uso de la inyección ReflectiveDll"
+description: Inyectar una DLL en un proceso remoto sin tocar disco.
+---
+
+La **inyección reflectiva de DLL** es la técnica que hace posible que Meterpreter mismo exista como lo conocemos: en vez de escribir un archivo `.dll` en disco y llamar a `LoadLibrary` (lo que dejaría un artefacto forense obvio y requiere que el loader del sistema operativo coopere), la DLL se inyecta directamente en la memoria de un proceso remoto junto con un pequeño *loader* reflectivo que ella misma incluye — el propio código de la DLL sabe cómo mapearse a sí mismo en memoria, resolver sus imports y llamar a su punto de entrada, sin pasar por el loader normal de Windows.
+
+El flujo general desde un módulo de explotación o post:
+
+1. Se obtiene o genera la DLL reflectiva (muchas ya están precompiladas dentro del framework, como la del propio Meterpreter).
+2. Se reserva memoria ejecutable en el proceso objetivo (`VirtualAllocEx`).
+3. Se escribe la DLL completa en esa memoria (`WriteProcessMemory`).
+4. Se crea un hilo remoto (`CreateRemoteThread`) que empieza a ejecutar en el offset del loader reflectivo embebido en la propia DLL.
+
+Esta técnica es la razón por la que una sesión Meterpreter "vive" completamente en memoria en el proceso que explotaste, sin dejar un ejecutable de Meterpreter en el disco del objetivo.

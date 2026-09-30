@@ -1,0 +1,25 @@
+---
+title: "Cómo descifrar RC4 con Metasploit Framework Compiler"
+description: Uso de rutinas RC4 integradas para cifrar o descifrar payloads y comunicaciones.
+---
+
+RC4 es un cifrado de flujo simple y barato de implementar, usado en varios lugares del framework para ofuscar (no para seguridad criptográfica real) comunicaciones entre un stager y su handler, o para envolver un payload antes de escribirlo a disco/red y así evitar que aparezca en texto plano frente a un análisis rápido.
+
+Ruby trae soporte para RC4 a través de OpenSSL, y el framework lo usa con esa misma interfaz:
+
+```ruby
+require 'openssl'
+
+def rc4(key, data)
+  cipher = OpenSSL::Cipher.new('RC4')
+  cipher.encrypt
+  cipher.key = key
+  cipher.update(data) + cipher.final
+end
+
+payload_cifrado = rc4('clave-compartida', payload.encoded)
+# Para descifrar: RC4 es simétrico, se aplica la misma operación con la misma clave
+payload_original = rc4('clave-compartida', payload_cifrado)
+```
+
+Como RC4 es simétrico, cifrar y descifrar son la misma operación — la clave debe coincidir en ambos extremos (por ejemplo, entre el stager que corre en el objetivo y el handler que espera la conexión), normalmente derivada de un valor fijo embebido en ambos.

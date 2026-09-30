@@ -1,0 +1,20 @@
+---
+title: "Cómo realizar una operación XOR con el compilador de Metasploit Framework"
+description: XOR como ofuscación ligera de shellcode o cadenas antes de ejecutarlas.
+---
+
+XOR de un solo byte (o de una clave corta repetida) es la forma de ofuscación más barata que existe: es reversible con la misma operación, no requiere librerías, y basta para romper la mayoría de firmas estáticas que buscan bytes de shellcode conocidos en texto plano dentro de un archivo o payload en tránsito.
+
+```ruby
+def xor(data, key)
+  bytes = data.bytes
+  key_bytes = key.bytes
+  bytes.each_with_index.map { |b, i| b ^ key_bytes[i % key_bytes.length] }.pack('C*')
+end
+
+ofuscado = xor(payload.encoded, "\x41\x9f")
+# En el stub que se ejecuta en el objetivo, se aplica la misma función con la misma clave
+# para reconstruir el shellcode original antes de saltar a él.
+```
+
+Como con RC4 (ver [RC4](/docs/desarrollo/utilidades/rc4)), esta técnica **no aporta seguridad criptográfica** — solo evita que el payload aparezca como bytes reconocibles en una inspección superficial. La clave suele ir embebida junto al stub de-ofuscador que se ejecuta primero en el objetivo.

@@ -1,0 +1,18 @@
+---
+title: "Cómo iniciar sesión en Metasploit"
+description: Niveles de log del framework — no autenticación de usuario, sino registro interno de eventos.
+---
+
+En este contexto, "iniciar sesión" se refiere al **logging interno del framework** (registro de eventos de ejecución), no a autenticarse como usuario — Metasploit Framework no tiene un sistema de cuentas de usuario propio; esa capa existe en productos separados como Metasploit Pro.
+
+Los módulos no deben usar `puts` (ver [Consejos de estilo](/docs/desarrollo/primeros-pasos/consejos-de-estilo)); en su lugar usan las helpers de impresión, que además de mostrar algo en consola lo registran en el log de msfconsole:
+
+| Método | Uso |
+|--------|-----|
+| `print_status(msg)` | Progreso general, informativo |
+| `print_good(msg)` | Algo positivo/exitoso (credencial encontrada, sesión abierta) |
+| `print_error(msg)` | Un fallo relevante para el operador |
+| `print_warning(msg)` | Advertencia no fatal |
+| `vprint_status(msg)` | Como `print_status`, pero solo visible si `VERBOSE` está activo |
+
+Todo lo impreso por estas helpers, junto con errores internos del framework, queda además escrito en el archivo de log de la instalación (normalmente bajo `~/.msf4/logs/framework.log`), útil para depurar un módulo después de que la sesión de consola ya se cerró.

@@ -1,0 +1,17 @@
+---
+title: "aux — Módulos auxiliares"
+description: Escaneo, fuzzing, enumeración, sniffing y fuerza bruta.
+---
+
+Módulos que **no explotan** pero son esenciales: escaneo, fuzzing, enumeración, sniffing, fuerza bruta.
+
+| Módulo | Descripción | Alcance |
+|--------|-------------|---------|
+| `aux/scanner/portscan` | Escaneo TCP/UDP/SYN | Todos |
+| `aux/scanner/smb_enum` | Enumeración SMB | Windows |
+| `aux/scanner/ssh_enum` | Enumeración SSH | Linux, macOS |
+| `aux/scanner/http_enum` | Directorios y vhosts | Navegadores, routers |
+| `aux/sniffer/arp_sniff` | ARP spoofing + sniffing | LAN |
+| `aux/bruteforce/ssh` | Fuerza bruta SSH | Linux, macOS |
+| `aux/fuzz/http_fuzz` | Fuzzing HTTP | Web, routers |
+| `aux/mitm/proxy` | Proxy MITM con SSL strip | Redes |

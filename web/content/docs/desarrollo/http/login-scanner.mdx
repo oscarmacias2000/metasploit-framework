@@ -1,0 +1,23 @@
+---
+title: "Cómo escribir un módulo HTTP LoginScanner"
+description: El framework Metasploit::Framework::LoginScanner para probar credenciales en bloque.
+---
+
+Cuando el objetivo es probar listas de credenciales contra un servicio (no solo un usuario/password), el patrón recomendado es `Metasploit::Framework::LoginScanner` en vez de armar manualmente el loop de fuerza bruta. Provee una clase por protocolo (HTTP incluido) con una interfaz común: se le da un host, un `Credential` (o una colección vía `AuthBrute`, ver [AuthBrute](/docs/desarrollo/mixins/authbrute)), y devuelve un `Result` con el estado (`SUCCESSFUL`, `INCORRECT`, `CONNECTION_ERROR`).
+
+```ruby
+scanner = Metasploit::Framework::LoginScanner::HTTP.new(
+  host: datastore['RHOSTS'],
+  port: datastore['RPORT'],
+  uri: '/login'
+)
+
+scanner.scan! do |result|
+  if result.status == Metasploit::Model::Login::Status::SUCCESSFUL
+    print_good("Credenciales válidas: #{result.credential}")
+    report_cred(ip: datastore['RHOSTS'], port: datastore['RPORT'], credential: result.credential)
+  end
+end
+```
+
+Este patrón es el que usan los módulos oficiales de `scanner/http/*_login`, y tiene la ventaja de compartir automáticamente la lógica de reporting con `report_cred` y de reconocer patrones comunes (bloqueo de cuenta, CAPTCHA) sin que cada módulo lo reimplemente.

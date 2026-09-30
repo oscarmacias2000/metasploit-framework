@@ -1,0 +1,18 @@
+---
+title: "Cómo usar Railgun para Windows después de la explotación"
+description: Llamar funciones de la API de Windows directamente desde Meterpreter.
+---
+
+Railgun es una característica de Meterpreter que permite invocar funciones de **cualquier DLL de la API de Windows** directamente desde Ruby, sin tener que compilar una DLL propia ni escribir shellcode a mano para cada llamada. Es extremadamente útil en módulos post que necesitan hacer algo muy específico del sistema operativo (leer un valor de registro poco común, manipular un handle, etc.) para lo cual no existe ya una API de más alto nivel en Meterpreter.
+
+```ruby
+# Llama a kernel32!CreateFileA desde la sesión Meterpreter
+handle = client.railgun.kernel32.CreateFileA(
+  'C:\\Windows\\win.ini', 'GENERIC_READ', 'FILE_SHARE_READ', nil,
+  'OPEN_EXISTING', 'FILE_ATTRIBUTE_NORMAL', nil
+)
+
+print_status("Handle devuelto: #{handle['return']}")
+```
+
+Railgun mapea automáticamente los tipos de la firma de la función Win32 (basándose en definiciones ya cargadas para las DLLs más comunes: `kernel32`, `advapi32`, `user32`, etc.), y devuelve un hash con el valor de retorno y los parámetros de salida (`OUT`/`INOUT`). Si necesitas una función de una DLL no definida por defecto, puedes registrar su firma manualmente antes de llamarla.

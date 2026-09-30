@@ -1,0 +1,29 @@
+---
+title: "Cómo enviar una solicitud HTTP usando HTTPClient"
+description: El mixin Msf::Exploit::Remote::HttpClient para exploits y módulos auxiliares HTTP.
+---
+
+`Msf::Exploit::Remote::HttpClient` es el mixin estándar para hablar HTTP/HTTPS desde un módulo (exploit o auxiliary). Una vez incluido, agrega opciones de datastore como `RHOSTS`, `RPORT` y `SSL`, y dos métodos principales para construir peticiones:
+
+- `send_request_cgi(opts)` — el más usado; arma la petición a partir de un hash de opciones (`uri`, `method`, `vars_get`, `vars_post`, `headers`, `data`).
+- `send_request_raw(opts)` — para cuando necesitas control total sobre bytes exactos que se envían (peticiones malformadas a propósito, por ejemplo).
+
+```ruby
+class MetasploitModule < Msf::Auxiliary
+  include Msf::Exploit::Remote::HttpClient
+
+  def run
+    res = send_request_cgi(
+      'uri'        => '/login',
+      'method'     => 'POST',
+      'vars_post'  => { 'user' => 'admin', 'pass' => 'admin' }
+    )
+
+    if res && res.code == 200
+      print_good('Login aceptado con credenciales por defecto')
+    end
+  end
+end
+```
+
+`send_request_cgi` maneja automáticamente la codificación de la URI y del cuerpo, cabeceras por defecto, y respeta `SSL`/`VHOST` del datastore sin que tengas que armar el socket a mano.

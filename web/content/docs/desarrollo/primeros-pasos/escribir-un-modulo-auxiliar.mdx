@@ -1,0 +1,33 @@
+---
+title: "Cómo empezar a escribir un módulo auxiliar"
+description: Diferencias entre un módulo auxiliar y un exploit, y el mixin Scanner.
+---
+
+Un módulo auxiliar **no busca dejar una sesión** en el objetivo: sirve para reconocimiento, enumeración, fuzzing o fuerza bruta. Su clase base es `Msf::Auxiliary` en vez de `Msf::Exploit`, y por eso no declara `Payload` ni `Targets` de explotación.
+
+Para escaneo contra múltiples hosts, el mixin `Msf::Auxiliary::Scanner` es el patrón estándar: en vez de implementar `run` para un solo objetivo, implementas `run_host(ip)`, y el framework se encarga de iterar sobre `RHOSTS` con el nivel de concurrencia definido en `THREADS`.
+
+```ruby
+class MetasploitModule < Msf::Auxiliary
+  include Msf::Auxiliary::Scanner
+
+  def initialize(info = {})
+    super(update_info(info,
+      'Name'        => 'Escáner de ejemplo',
+      'Description' => 'Verifica si un servicio responde en el puerto dado',
+      'Author'      => ['tu nombre']
+    ))
+    register_options([
+      Opt::RPORT(8080)
+    ])
+  end
+
+  def run_host(ip)
+    connect
+    print_good("#{ip}:#{rport} respondió") if sock
+    disconnect
+  end
+end
+```
+
+Los hallazgos se reportan con `report_note`/`report_service` en vez de abrir una sesión — ver [Cómo generar informes o almacenar datos](/docs/desarrollo/datos/reportar-y-almacenar-datos).

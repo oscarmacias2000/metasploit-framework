@@ -1,0 +1,33 @@
+---
+title: "Cómo empezar a escribir un módulo de post-explotación"
+description: Estructura de un módulo post y acceso a la sesión activa.
+---
+
+Los módulos de post-explotación (`post/`) se ejecutan **después** de tener una sesión (Meterpreter o shell) abierta contra el objetivo. Heredan de `Msf::Post` y reciben la sesión activa a través del objeto `session`, disponible en todo el módulo.
+
+Aspectos clave:
+
+- `session_types` en `initialize` limita el módulo a los tipos de sesión que soporta (`meterpreter`, `shell`).
+- `platform` limita a qué sistemas operativos aplica (`['windows']`, `['linux']`, etc.).
+- Contra una sesión Meterpreter tienes acceso a APIs de alto nivel como `session.sys.process`, `session.fs.file`, `session.sys.registry`.
+- Contra una shell simple, normalmente usas `cmd_exec` o `session.shell_command` para correr comandos del sistema operativo y parsear la salida en texto plano.
+
+```ruby
+class MetasploitModule < Msf::Post
+  def initialize(info = {})
+    super(update_info(info,
+      'Name'          => 'Recolector de ejemplo',
+      'Description'   => 'Extrae información básica del host comprometido',
+      'Platform'      => ['windows'],
+      'SessionTypes'  => ['meterpreter']
+    ))
+  end
+
+  def run
+    print_status("Hostname: #{sysinfo['Computer']}")
+    print_status(cmd_exec('whoami'))
+  end
+end
+```
+
+Siempre implementa `cleanup` si el módulo dejó artefactos temporales — ver [Cómo limpiar después de la ejecución del módulo](/docs/desarrollo/datos/limpieza-post-ejecucion).

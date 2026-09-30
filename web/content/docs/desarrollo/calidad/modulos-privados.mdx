@@ -1,0 +1,16 @@
+---
+title: "Ejecución de módulos privados"
+description: Cómo cargar módulos que no están en el árbol oficial de Metasploit.
+---
+
+No todos los módulos viven en el repositorio público de Metasploit Framework. Es común tener **módulos privados**: exploits de un cliente específico, herramientas internas de un equipo, o módulos en desarrollo que aún no se han enviado como pull request.
+
+Para cargarlos sin tocar la instalación del framework, msfconsole soporta rutas de módulos adicionales:
+
+```
+msf > loadpath /home/usuario/mis-modulos
+```
+
+También existe una carpeta de usuario que se carga automáticamente al iniciar la consola, normalmente `~/.msf4/modules/`, respetando la misma estructura de subcarpetas que el árbol oficial (`exploits/`, `auxiliary/`, `post/`, etc. bajo `<tipo>/<plataforma>/...`).
+
+Esta separación es importante para mantener limpio el árbol público: los módulos privados o específicos de un engagement no deberían mezclarse con los módulos que se distribuyen con el framework, tanto por razones de confidencialidad (pueden apuntar a vulnerabilidades no divulgadas) como de mantenimiento.

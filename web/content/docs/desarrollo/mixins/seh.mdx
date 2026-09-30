@@ -1,0 +1,25 @@
+---
+title: "Cómo usar el mixin Seh para explotar un manejador de excepciones"
+description: Sobreescritura de SEH en Windows x86 y su relación con los encoders.
+---
+
+En arquitecturas Windows x86 antiguas (previo a las mitigaciones modernas como SafeSEH/SEHOP siendo obligatorias), una técnica clásica de explotación es sobreescribir el **Structured Exception Handler** (SEH) en la pila, de forma que al producirse una excepción (a menudo provocada a propósito por el propio overflow) la ejecución salte a código controlado por el atacante.
+
+`Msf::Exploit::Seh` no automatiza la técnica completa, pero provee constantes y utilidades para construir el patrón `nSEH`/`SEH` de forma consistente con el resto del framework:
+
+```ruby
+include Msf::Exploit::Seh
+
+def exploit
+  buffer = 'A' * offset_hasta_seh
+  buffer << generate_seh_record(target.ret)  # nSEH (jump corto) + SEH (pop pop ret)
+  buffer << payload.encoded
+
+  connect
+  sock.put(buffer)
+  handler
+  disconnect
+end
+```
+
+Como el registro SEH sobreescrito suele terminar apuntando a una dirección que puede contener bytes conflictivos, este tipo de exploit casi siempre se combina con un **encoder** (para evitar bytes nulos u otros caracteres que el protocolo del objetivo no permite) al generar el payload final.

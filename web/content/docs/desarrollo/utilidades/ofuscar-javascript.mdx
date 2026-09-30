@@ -1,0 +1,17 @@
+---
+title: "Cómo ofuscar JavaScript en Metasploit"
+description: Rex::Exploitation::ObfuscateJS para dificultar la detección de exploits de navegador.
+---
+
+Los exploits de navegador (ver [BrowserExploitServer](/docs/desarrollo/http/browser-exploit-server)) sirven JavaScript que un IDS, proxy o AV con inspección de contenido web puede intentar detectar por firma. `Rex::Exploitation::ObfuscateJS` toma el JavaScript del exploit y lo transforma automáticamente: renombra variables locales, reordena declaraciones cuando es seguro hacerlo, y puede envolver fragmentos en técnicas simples de empaquetado (similares a un packer de JS), sin cambiar el comportamiento del script.
+
+```ruby
+js_original = File.read(File.join(Msf::Config.data_directory, 'exploits', 'mi_exploit.js'))
+
+js = Rex::Exploitation::ObfuscateJS.new(js_original)
+js.obfuscate!(:strip_comments => true, :rename_vars => true)
+
+send_response_html(cli, "<script>#{js}</script>")
+```
+
+Igual que con las técnicas de ofuscación de binarios ([CRandomizer](/docs/desarrollo/utilidades/crandomizer)), esto ayuda contra firmas estáticas basadas en el código fuente exacto, pero no sustituye una explotación que ya sea sigilosa por diseño — es una capa adicional, no una garantía de evasión.

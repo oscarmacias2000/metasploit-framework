@@ -1,0 +1,28 @@
+---
+title: "Cómo analizar una respuesta HTTP"
+description: El objeto Rex::Proto::Http::Response y sus métodos de acceso.
+---
+
+Cuando un módulo envía una petición HTTP (ver [HTTPClient](/docs/desarrollo/http/httpclient)), la respuesta llega como un objeto `Rex::Proto::Http::Response`, con una API consistente sin importar qué mixin la generó.
+
+Accesores más usados:
+
+- `res.code` — el código de estado HTTP (`200`, `404`, etc.), como entero.
+- `res.headers` — hash-like con las cabeceras de respuesta.
+- `res.body` — el cuerpo crudo, como string.
+- `res.get_html_document` — parsea `res.body` como HTML y devuelve un documento navegable (útil para extraer un token con XPath/CSS en vez de regex frágiles).
+- `res.get_json_document` — equivalente para respuestas JSON.
+
+```ruby
+res = send_request_cgi('uri' => '/api/status')
+return CheckCode::Unknown unless res
+
+if res.code == 200
+  data = res.get_json_document
+  print_status("Versión reportada: #{data['version']}")
+elsif res.code == 401
+  print_error('Requiere autenticación')
+end
+```
+
+Siempre verifica que `res` no sea `nil` antes de usarlo — una petición puede fallar por timeout o conexión rechazada, y en ese caso el mixin devuelve `nil` en vez de lanzar una excepción.

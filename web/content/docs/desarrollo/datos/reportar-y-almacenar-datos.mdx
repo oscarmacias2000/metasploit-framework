@@ -1,0 +1,28 @@
+---
+title: "Cómo generar informes o almacenar datos en el desarrollo de módulos"
+description: Los métodos report_* para persistir hallazgos en la base de datos del proyecto.
+---
+
+Cuando msfconsole está conectada a una base de datos de proyecto (PostgreSQL), los módulos pueden — y deberían — persistir lo que encuentran en vez de solo imprimirlo en pantalla, para que quede disponible después con `hosts`, `services`, `creds`, `vulns`, o para otro módulo que consulte esos datos.
+
+Métodos más usados:
+
+- `report_host(host: ip, os_name: 'Windows')` — registra o actualiza un host.
+- `report_service(host: ip, port: 443, proto: 'tcp', name: 'https')` — registra un servicio detectado.
+- `report_vuln(host: ip, name: 'CVE-2023-12345', info: 'Confirmado por check')` — registra una vulnerabilidad.
+- `report_cred(ip:, port:, credential:)` — registra una credencial válida encontrada (ver [AuthBrute](/docs/desarrollo/mixins/authbrute)).
+- `report_note(host: ip, type: 'nota.custom', data: { detalle: '...' })` — para cualquier dato estructurado que no encaje en las categorías anteriores.
+
+```ruby
+report_service(host: rhost, port: rport, proto: 'tcp', name: 'http', info: 'Servicio detectado por escáner')
+
+if vulnerable?
+  report_vuln(
+    host: rhost,
+    name: 'Ejemplo de vulnerabilidad',
+    info: 'Confirmado mediante respuesta del endpoint /version'
+  )
+end
+```
+
+Reportar consistentemente es lo que permite encadenar módulos: un escáner reporta credenciales, y un módulo post posterior puede simplemente leerlas desde la base de datos en vez de que el operador las vuelva a teclear.

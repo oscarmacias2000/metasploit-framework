@@ -1,0 +1,163 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+  /* Paleta extraida por muestreo de pixeles de vista-inicio.png (modo claro real). */
+  --background: #ffffff;
+  --foreground: #1c1e21;
+  --muted: #f5f6f7;
+  --muted-foreground: #5b6472;
+  --border: #444950;
+  --card: #ffffff;
+  --card-foreground: #1c1e21;
+
+  --primary: #2f5d8a;
+  --primary-hover: #24486d;
+  --primary-foreground: #ffffff;
+
+  --secondary: #ebe6d6;
+  --secondary-hover: #e2dcc6;
+  --secondary-foreground: #1c1e21;
+
+  --warning: #c98a1b;
+  --warning-foreground: #ffffff;
+
+  --danger: #dc2626;
+  --danger-foreground: #ffffff;
+  --success: #16a34a;
+  --success-foreground: #ffffff;
+
+  --code-bg: #f5f6f7;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+.dark {
+  /* Version oscura consistente con la misma paleta (dark protagonista por spec). */
+  --background: #0e1013;
+  --foreground: #e7e8ea;
+  --muted: #16181d;
+  --muted-foreground: #9aa3af;
+  --border: #2b2f36;
+  --card: #16181d;
+  --card-foreground: #e7e8ea;
+
+  --primary: #5b8fc7;
+  --primary-hover: #6fa0d6;
+  --primary-foreground: #0e1013;
+
+  --secondary: #23262b;
+  --secondary-hover: #2b2e34;
+  --secondary-foreground: #e7e8ea;
+
+  --warning: #d99a2b;
+  --warning-foreground: #0e1013;
+
+  --danger: #f87171;
+  --danger-foreground: #1c1e21;
+  --success: #34d399;
+  --success-foreground: #0e1013;
+
+  --code-bg: #16181d;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-code-bg: var(--code-bg);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+
+  --animate-fade-scale-in: fade-scale-in 800ms ease-out both;
+  --animate-fade-in: fade-in 500ms ease-out both;
+  --animate-shimmer-sweep: shimmer-sweep 1.6s ease-in-out infinite;
+  --animate-shake: shake 400ms ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+@keyframes fade-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(220%);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Shiki (@shikijs/rehype con defaultColor:false) expone --shiki-light/--shiki-dark
+   por token; aqui elegimos cual se pinta segun la clase .dark en <html>. */
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg) !important;
+}
+
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg) !important;
+}

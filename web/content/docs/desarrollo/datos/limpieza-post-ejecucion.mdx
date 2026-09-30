@@ -1,0 +1,26 @@
+---
+title: "Cómo limpiar después de la ejecución del módulo"
+description: El método cleanup y por qué revertir cambios en el objetivo es buena práctica.
+---
+
+Muchos módulos —sobre todo de post-explotación— dejan artefactos temporales en el objetivo mientras hacen su trabajo: un archivo subido, una clave de registro creada para persistencia de prueba, un servicio instalado momentáneamente. Dejar esos artefactos después de terminar es tanto un riesgo operacional (en un pentest autorizado, ensucia el objetivo del cliente) como forense (facilita que un defensor encuentre evidencia de la intrusión más tarde).
+
+El método `cleanup` existe justamente para esto: se puede invocar explícitamente al final de `run`, o registrarse para ejecutarse incluso si el módulo fallara a mitad de camino.
+
+```ruby
+def run
+  @archivo_temporal = '%TEMP%\\actualizacion.tmp'
+  cmd_exec("echo prueba > #{@archivo_temporal}")
+
+  # ... resto de la lógica ...
+ensure
+  cleanup
+end
+
+def cleanup
+  cmd_exec("del #{@archivo_temporal}") if @archivo_temporal
+  super
+end
+```
+
+Buenas prácticas de limpieza: registra cada artefacto creado en una variable de instancia apenas lo crees (no al final, cuando ya podrías haber olvidado alguno), y envuelve la lógica principal en `begin/ensure` para que `cleanup` corra incluso si el módulo lanza una excepción a mitad de la ejecución.

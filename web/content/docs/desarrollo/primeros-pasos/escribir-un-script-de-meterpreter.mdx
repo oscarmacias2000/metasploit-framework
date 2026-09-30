@@ -1,0 +1,22 @@
+---
+title: "Cómo empezar a escribir un script de Meterpreter"
+description: Scripts legado de Meterpreter frente a módulos post modernos.
+---
+
+Antes de que existieran los módulos `post/`, la forma de automatizar tareas sobre una sesión Meterpreter eran los **scripts de Meterpreter** (`.rb` en el directorio de scripts, ejecutados con `run <script>` dentro de la sesión). Un script tenía acceso directo al objeto `client` (la sesión), pero no pasaba por el ciclo de vida ni los metadatos del framework de módulos.
+
+Hoy en día **se prefiere escribir un módulo post** en vez de un script legado, porque un módulo:
+
+- Aparece en `search` y tiene metadatos (`Name`, `Description`, `Platform`).
+- Puede ejecutarse en batch contra múltiples sesiones (`sessions -c`).
+- Se integra con `report_*` para guardar resultados en la base de datos del proyecto.
+
+Dentro de un script legado (o dentro de un módulo post, la API es la misma), el objeto de sesión expone cosas como:
+
+```ruby
+client.sys.config.sysinfo
+client.fs.dir.entries('C:\\')
+client.sys.process.execute('cmd.exe', nil, { 'Hidden' => true })
+```
+
+Si estás empezando algo nuevo, escribe un módulo post en vez de un script — ver [Cómo empezar a escribir un módulo de post-explotación](/docs/desarrollo/primeros-pasos/escribir-un-modulo-post).

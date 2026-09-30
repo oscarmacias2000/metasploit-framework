@@ -1,0 +1,20 @@
+---
+title: "Cómo usar WbemExec para un ataque de privilegios de escritura en Windows"
+description: Abuso de WMI/WBEM para ejecución remota de comandos con credenciales válidas.
+---
+
+Cuando ya tienes credenciales administrativas válidas (obtenidas por otro medio) contra un host Windows, **WMI/WBEM** es uno de los canales clásicos de movimiento lateral: permite ejecutar comandos remotamente sin depender de SMB/PsExec, lo cual en algunos entornos evade controles centrados solo en ese protocolo.
+
+El patrón general en un módulo auxiliar o exploit que usa este vector:
+
+1. Autenticarse contra el espacio de nombres WBEM del objetivo con las credenciales del datastore (`SMBUser`, `SMBPass`, `SMBDomain` suelen reutilizarse).
+2. Invocar el método `Create` de la clase `Win32_Process` sobre esa conexión, pasándole la línea de comandos a ejecutar.
+3. El proceso se crea en el contexto del objetivo, sin dejar un binario nuevo en disco si el comando ejecuta algo ya presente (`cmd.exe`, `powershell.exe`).
+
+```ruby
+wmi = connect_wbem(datastore['RHOSTS'], datastore['SMBUser'], datastore['SMBPass'], datastore['SMBDomain'])
+wmi.exec_query('SELECT * FROM Win32_Process')  # verifica acceso
+wmi.create_process("cmd.exe /c #{comando}")
+```
+
+Como este vector requiere credenciales válidas de antemano, normalmente aparece como módulo de post-explotación o de movimiento lateral, no como exploit de una vulnerabilidad de por sí.

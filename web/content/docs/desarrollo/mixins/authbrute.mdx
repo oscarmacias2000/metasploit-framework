@@ -1,0 +1,28 @@
+---
+title: "Cómo usar Msf Auxiliary AuthBrute para escribir un programa de fuerza bruta"
+description: El mixin Msf::Auxiliary::AuthBrute para probar combinaciones de usuario/contraseña.
+---
+
+`Msf::Auxiliary::AuthBrute` estandariza la forma en que los módulos de fuerza bruta manejan listas de credenciales, para que cada módulo no reinvente su propio parser de `USER_FILE`/`PASS_FILE`/`USERPASS_FILE`. Provee el iterador `each_user_pass`, que ya respeta las opciones de datastore comunes a todos los módulos de este tipo.
+
+```ruby
+include Msf::Auxiliary::AuthBrute
+
+def run_host(ip)
+  each_user_pass do |user, pass|
+    vprint_status("Probando #{user}:#{pass}")
+
+    if intentar_login(ip, user, pass)
+      print_good("Credenciales válidas: #{user}:#{pass}")
+      report_cred(ip: ip, port: rport, credential: Metasploit::Framework::Credential.new(public: user, private: pass))
+      return if datastore['STOP_ON_SUCCESS']
+    end
+  end
+end
+```
+
+Opciones de datastore relevantes que el mixin agrega automáticamente:
+
+- `BRUTEFORCE_SPEED` — controla cuánto se espera entre intentos (0 = agresivo, 5 = muy conservador), pensado para no disparar bloqueos de cuenta.
+- `STOP_ON_SUCCESS` — detiene el escaneo del host en cuanto encuentra una credencial válida.
+- `USER_AS_PASS`, `BLANK_PASSWORDS` — heurísticas comunes que se prueban automáticamente si están activadas.

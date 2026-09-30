@@ -1,0 +1,19 @@
+---
+title: "Cómo comprimir archivos con Msf::Util::EXE.to_zip"
+description: Empaquetar payloads o artefactos generados en un zip desde un módulo.
+---
+
+`Msf::Util::EXE` no solo genera ejecutables — también incluye `to_zip`, un helper para empaquetar uno o varios archivos generados por el módulo (payloads, DLLs auxiliares, scripts) en un único `.zip` antes de entregarlos, guardarlos en `loot/`, o servirlos por HTTP.
+
+```ruby
+archivos = {
+  'payload.exe' => payload.encoded_exe,
+  'lea_me.txt'  => 'Instrucciones de uso del payload adjunto.'
+}
+
+zip_data = Msf::Util::EXE.to_zip(archivos)
+path = store_loot('paquete_payload', 'application/zip', datastore['RHOSTS'], zip_data, 'paquete.zip')
+print_good("Zip guardado en #{path}")
+```
+
+Empaquetar en zip es útil cuando el vector de entrega requiere un solo archivo adjunto (por ejemplo, un correo de phishing) pero el payload en sí necesita ir acompañado de otros archivos de soporte, o simplemente para reducir el tamaño antes de transferirlo por un canal lento.

@@ -1,0 +1,27 @@
+---
+title: "payloads — Generación de payloads"
+description: Genera artefactos por plataforma y arquitectura.
+---
+
+Genera artefactos por plataforma y arquitectura.
+
+| Payload | Descripción | Target |
+|---------|-------------|--------|
+| `payloads/windows/x64/meterpreter.exe` | Reverse shell x64 | Windows |
+| `payloads/windows/x86/shellcode.ps1` | PowerShell in-memory | Windows |
+| `payloads/linux/x64/elf_reverse` | ELF reverse shell | Linux |
+| `payloads/linux/arm/mips_reverse` | ARM/MIPS (IoT) | Routers |
+| `payloads/macos/x64/macho_reverse` | Mach-O reverse | macOS |
+| `payloads/macos/arm64/macho_reverse` | Apple Silicon | macOS M1/M2 |
+| `payloads/nokia/sis/backdoor.sis` | Paquete SIS | Symbian |
+| `payloads/nokia/j2me/backdoor.jar` | J2ME MIDlet | Nokia S30+ |
+| `payloads/browser/js_inject.js` | JS inyectable | Navegadores |
+| `payloads/browser/wasm_inject.wasm` | WASM ofuscado | Navegadores |
+| `payloads/network/router_mips.bin` | Firmware backdoor | Routers |
+| `payloads/network/switch_cisco.tcl` | Script TCL IOS | Conmutadores Cisco |
+
+**Opciones comunes:**
+
+```
+LHOST, LPORT, ENCODER, ITERATIONS, FORMAT (exe/elf/macho/sis/jar/js/wasm), ARCH
+```

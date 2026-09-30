@@ -1,0 +1,26 @@
+---
+title: "Cómo usar el mixin FILEFORMAT para crear una vulnerabilidad de formato de archivo"
+description: Msf::Exploit::FILEFORMAT para exploits que generan un archivo malicioso.
+---
+
+No todos los exploits atacan por red: muchos dependen de que la víctima **abra un archivo** malformado (PDF, DOC, imagen, etc.) con software vulnerable. `Msf::Exploit::FILEFORMAT` es la clase base para este patrón — en vez de `exploit` conectando a un socket, el método `exploit` genera un archivo en disco (o en memoria, para luego guardarlo) con el `FILENAME` configurado en el datastore.
+
+```ruby
+class MetasploitModule < Msf::Exploit::Remote
+  include Msf::Exploit::FILEFORMAT
+
+  def initialize(info = {})
+    super(update_info(info,
+      'Name'           => 'Generador de documento malicioso de ejemplo',
+      'DefaultOptions' => { 'FILENAME' => 'informe.docx' }
+    ))
+  end
+
+  def exploit
+    documento = construir_documento_con_payload(payload.encoded)
+    file_create(documento)
+  end
+end
+```
+
+`file_create` guarda el archivo generado en la carpeta de salida de Metasploit (`loot/`) y le informa la ruta al operador. El vector de entrega (correo, USB, descarga) queda fuera del módulo — normalmente se combina con ingeniería social o con otro módulo que sirva el archivo por HTTP.

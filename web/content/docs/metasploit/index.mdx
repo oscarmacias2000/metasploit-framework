@@ -1,0 +1,57 @@
+---
+title: Metasploit
+description: Framework modular de auditoría, explotación y post-explotación multiplataforma.
+---
+
+> Framework modular de auditoría, explotación y post-explotación multiplataforma.
+> Soporta Windows, Linux, macOS, Nokia (Symbian/Series 30+), navegadores, módems, routers y conmutadores.
+
+## Aviso legal
+
+Este proyecto está diseñado **exclusivamente** para:
+
+- Pruebas de penetración autorizadas por escrito.
+- Laboratorios de investigación propios o con permiso.
+- CTFs, entornos educativos y formación en ciberseguridad.
+- Auditorías de seguridad con contrato firmado (scope definido).
+
+**El uso de este software contra sistemas sin autorización explícita es ilegal** en la mayoría de jurisdicciones (Computer Fraud and Abuse Act, Ley Orgánica de Protección de Datos, Convenio de Budapest, etc.). Los autores no se hacen responsables del mal uso.
+
+## Descripción general
+
+**typefish** escrito en Python (con soporte para scripts nativos en cada plataforma) que permite:
+
+- Ejecutar **reconocimiento, explotación y post-explotación** sobre múltiples objetivos.
+- Generar **payloads** personalizados por plataforma.
+- Inyectar **JavaScript** en navegadores y contextos web.
+- Interactuar con **dispositivos de red** (módems, routers, conmutadores).
+- Mantener sesiones persistentes vía **consola interactiva**.
+
+Cada módulo es **independiente, cargable en caliente** y sigue una interfaz común.
+
+## Arquitectura
+
+```
+┌──────────────────────────────────────────────────────┐
+│                    CLI / Console                     │
+│              (msfconsole-like interactive)           │
+└────────────────────────┬─────────────────────────────┘
+                         │
+        ┌────────────────┼────────────────┐
+        ▼                ▼                ▼
+   ┌─────────┐     ┌──────────┐     ┌───────────┐
+   │ Scanner │     │ Exploit  │     │ Post      │
+   └────┬────┘     └────┬─────┘     └─────┬─────┘
+        │               │                 │
+        └───────────────┼─────────────────┘
+                        ▼
+              ┌───────────────────┐
+              │   Session Manager │
+              │  (aux/payloads)   │
+              └─────────┬─────────┘
+                        ▼
+              ┌───────────────────┐
+              │   Transport Layer │
+              │ (TCP/UDP/HTTP/WS) │
+              └───────────────────┘
+```

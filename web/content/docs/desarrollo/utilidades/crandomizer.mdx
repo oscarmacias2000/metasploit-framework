@@ -1,0 +1,13 @@
+---
+title: "Cómo usar el CRandomizer de ofuscación de Metasploit Framework"
+description: Renombrado automático de identificadores en código C generado para evadir firmas.
+---
+
+Cuando un módulo compila un stub en C (ver [Compilador C para Windows](/docs/desarrollo/utilidades/compilador-c-windows)), el binario resultante puede tener patrones reconocibles por firmas estáticas de antivirus si se genera siempre igual. `CRandomizer` recorre el código fuente C antes de compilarlo y renombra automáticamente nombres de variables, funciones internas y en algunos casos reordena bloques equivalentes, produciendo un binario funcionalmente idéntico pero con una huella distinta en cada generación.
+
+```ruby
+codigo = Msf::Exploit::Compilation::CRandomizer.randomize(codigo_c_original)
+exe = Msf::Util::EXE.to_win32pe_from_c_src(codigo)
+```
+
+Es importante entender los límites de esta técnica: renombrar identificadores ayuda contra firmas basadas en strings/símbolos del código fuente, pero no contra detección basada en comportamiento (heurística/sandboxing) ni contra firmas del propio payload que se embebe dentro del stub — es una capa más, no una solución completa de evasión.

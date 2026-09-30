@@ -1,0 +1,23 @@
+---
+title: "Cómo usar el mixin Msf::Exploit::Remote::Tcp"
+description: Conexión TCP cruda para protocolos que no son HTTP.
+---
+
+Cuando el servicio objetivo habla un protocolo binario propio o un protocolo de texto plano que no es HTTP (SMTP, un protocolo propietario, un servicio industrial), el mixin `Msf::Exploit::Remote::Tcp` da lo básico: opciones `RHOSTS`/`RPORT` en el datastore y los métodos `connect`, `disconnect`, y acceso al socket crudo `sock`.
+
+```ruby
+include Msf::Exploit::Remote::Tcp
+
+def exploit
+  connect
+  sock.put("HELLO\r\n")
+  banner = sock.get_once
+  print_status("Banner: #{banner}")
+
+  sock.put(buffer_malicioso)
+  handler
+  disconnect
+end
+```
+
+`sock.put` envía bytes, `sock.get_once` lee lo que haya disponible sin bloquear indefinidamente (respeta el timeout del datastore). Este mixin es la base sobre la que se construyen mixins más específicos como `HttpClient` — úsalo directamente solo cuando el protocolo del objetivo no encaje en ninguno de los mixins de más alto nivel.

@@ -1,0 +1,24 @@
+---
+title: "Identificadores de referencia del módulo"
+description: El array References y por qué es obligatorio para la trazabilidad de un módulo.
+---
+
+Todo módulo (exploit o auxiliar de detección) debe declarar sus fuentes en el array `References` dentro de `initialize`. Esto permite a cualquiera rastrear el origen de la vulnerabilidad, leer el advisory original, o encontrar el exploit público en el que se basó el módulo.
+
+Formatos aceptados más comunes:
+
+```ruby
+'References' => [
+  ['CVE', '2023-12345'],
+  ['EDB', '51234'],
+  ['URL', 'https://blog.ejemplo.com/advisory-detallado'],
+  ['WPVDBID', '9999'],   # vulnerabilidades de plugins de WordPress
+]
+```
+
+- `CVE` — el identificador oficial de Mitre/NVD, cuando existe.
+- `EDB` — el ID en Exploit-DB, si el módulo se basó en un PoC publicado ahí.
+- `URL` — cualquier advisory, blog post o writeup relevante que no tenga un identificador formal.
+- `WPVDBID` — específico para vulnerabilidades del ecosistema WordPress.
+
+Un módulo sin ninguna referencia normalmente se rechaza en revisión, salvo casos de investigación original del propio autor documentados en la `Description`.
